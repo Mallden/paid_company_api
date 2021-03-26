@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80
+    restart: always
+    volumes:
+      - "./app:/app"
+    ports:
+      - 80:80
+    depends_on:
+      - postgres
+    env_file:
+      - docker.env
+
+  postgres:
+    image: postgres:12.0-alpine
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=test
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
