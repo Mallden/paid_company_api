@@ -24,7 +24,7 @@ class CompanyPaid(base):
     def create(cls, object_create):
         session.add(object_create)
         session.commit()
-        return cls.objects().filter_by(company_id=object_create.company_id)[0]
+        return cls.objects().filter_by(company_id=object_create.company_id).first()
 
     @staticmethod
     def bulk_create(objects_create):
