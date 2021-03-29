@@ -20,12 +20,6 @@ async def read_item(item_id: int):
     return company_info_paid[0]
 
 
-@app.get("/refresh_db/")
-async def refresh_db():
-    base.metadata.create_all(engine)
-    return {"return": "ok"}
-
-
 @app.put("/items/")
 async def update_items(items: dict):
     info_companies = CompanyPaid.objects().filter(CompanyPaid.company_id.in_(items.keys()))
