@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import FastAPI
 
 from app.database import session, base
@@ -17,7 +15,7 @@ def read_root():
 @app.get("/items/{item_id}/")
 async def read_item(item_id: int):
     company_info_paid = CompanyPaid.objects().filter_by(company_id=item_id)
-    return company_info_paid.first()
+    return company_info_paid[0]
 
 
 @app.put("/items/")
@@ -50,3 +48,9 @@ async def added_items(items: dict):
         added_list.append(CompanyPaid(company_id=key, paid=items[key]))
     CompanyPaid.bulk_create(added_list)
     return {"result": "ok"}
+
+
+@app.get("/refresh_db")
+async def refresh_db():
+    base.metadata.create_all(engine)
+    return {"return": "ok"}
