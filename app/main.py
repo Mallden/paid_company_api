@@ -14,7 +14,7 @@ def read_root():
     return {"Welcome": "PaidAPI"}
 
 
-@app.get("/items/{item_id}")
+@app.get("/items/get/{item_id}")
 async def read_item(item_id: int):
     company_info_paid = CompanyPaid.objects().filter_by(company_id=item_id)
     return company_info_paid[0]
@@ -26,7 +26,7 @@ async def refresh_db():
     return {"return": "ok"}
 
 
-@app.put("/items_refresh")
+@app.put("/items/refresh")
 async def update_items(items: dict):
     info_companies = CompanyPaid.objects().filter(CompanyPaid.company_id.in_(items.keys()))
     update_list = list()
@@ -41,15 +41,15 @@ async def update_items(items: dict):
     return {"result": "ok"}
 
 
-@app.put("/update_item")
-async def update_item(company_id: int, info: bool):
-    info_company = CompanyPaid.objects().filter_by(company_id=company_id).first()
+@app.put("/items/update/")
+async def update_item(item_id: int, info: bool):
+    info_company = CompanyPaid.objects().filter_by(company_id=item_id).first()
     info_company.paid = info
     session.commit()
     return {"result": "ok"}
 
 
-@app.post("/added_items")
+@app.post("/items/add")
 async def added_items(items: dict):
     added_list = list()
     for key in items:
