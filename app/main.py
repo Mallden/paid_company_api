@@ -15,7 +15,7 @@ def read_root():
 @app.get("/items/{item_id}/")
 async def read_item(item_id: int):
     company_info_paid = CompanyPaid.objects().filter_by(company_id=item_id)
-    return company_info_paid[0]
+    return company_info_paid.first()
 
 
 @app.put("/items/")
